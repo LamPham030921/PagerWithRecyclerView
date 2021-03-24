@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.FragmentPhotosBinding
 import com.example.pagerwithrecyclerview.response.Photo
@@ -40,6 +41,11 @@ class PhotosFragment : Fragment() {
             val dummyList = mutableListOf<Photo>()
             listPhoto.addAll(it)
             dummyList.addAll(it)
+            if (it.size > 0) {
+                context?.let { it1 ->
+                    Glide.with(it1).load(it[0].urls?.regular).into(binding.ivBackground)
+                }
+            }
             photoAdapter.submitList(dummyList)
         })
 
@@ -54,6 +60,7 @@ class PhotosFragment : Fragment() {
     private fun initAdapter() {
         photoAdapter = PhotosAdapter()
         binding.rvPhotos.apply {
+            setItemViewCacheSize(4)
             layoutManager = PhotosAdapter.ProminentLayoutManager(context)
             adapter = photoAdapter
         }
@@ -68,6 +75,15 @@ class PhotosFragment : Fragment() {
 
                 val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
                 if (lastPosition == listPhoto.size - 2) viewModel.loadMoreImage()
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val firstPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    Glide.with(context!!).load(listPhoto[firstPosition].urls?.regular)
+                        .into(binding.ivBackground)
+                }
             }
         })
     }

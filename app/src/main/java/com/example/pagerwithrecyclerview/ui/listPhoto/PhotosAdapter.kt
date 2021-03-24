@@ -13,6 +13,7 @@ import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.ItemPhotoBinding
 import com.example.pagerwithrecyclerview.response.Photo
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtils()) {
 
@@ -65,6 +66,7 @@ class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtil
 
             // Any view further than this threshold will be fully scaled down
             val scaleDistanceThreshold = minScaleDistanceFactor * containerCenter
+            var translationXForward = 0f
 
             for (i in 0 until childCount) {
                 val child = getChildAt(i)!!
@@ -78,7 +80,28 @@ class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtil
                 child.scaleX = scale
                 child.scaleY = scale
 
+                val translationDirection = if (childCenter > containerCenter) -1 else 1
+                val translationXFromScale = translationDirection * child.width * (1 - scale) / 2f
+
+                child.translationX = translationXFromScale + translationXForward
+
+                translationXForward = 0f
+
+                if (translationXFromScale > 0 && i >= 1) {
+                    // Edit previous child
+                    getChildAt(i - 1)!!.translationX += 2 * translationXFromScale
+
+                } else if (translationXFromScale < 0) {
+                    // Pass on to next child
+                    translationXForward = 2 * translationXFromScale
+                }
             }
+        }
+
+        override fun getExtraLayoutSpace(state: RecyclerView.State): Int {
+            // Since we're scaling down items, we need to pre-load more of them offscreen.
+            // The value is sort of empirical: the more we scale down, the more extra space we need.
+            return (width / (1 - scaleDownBy)).roundToInt()
         }
     }
 
