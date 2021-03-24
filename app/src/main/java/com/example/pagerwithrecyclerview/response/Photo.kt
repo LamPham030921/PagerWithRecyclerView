@@ -14,5 +14,9 @@ class Photo(
     @SerializedName("small")
     var small: String? = null,
     @SerializedName("thumb")
-    var thumb: String? = null
+    var thumb: String? = null,
+    @SerializedName("width")
+    var width: Int? = null,
+    @SerializedName("height")
+    var height: Int? = null
 )

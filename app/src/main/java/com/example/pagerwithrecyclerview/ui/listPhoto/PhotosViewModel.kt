@@ -15,8 +15,8 @@ class PhotosViewModel : ViewModel() {
     private var dataService: UnsplashApi =
         UnsplashClient.getUnsplashClient()!!.create(UnsplashApi::class.java)
     private var page = 1
-    private var perPage = 10
     val listPhoto by lazy { MutableLiveData<MutableList<Photo>>() }
+    val loadMoreListPhoto by lazy { MutableLiveData<MutableList<Photo>>() }
 
     init {
         listPhoto.value = mutableListOf()
@@ -29,6 +29,23 @@ class PhotosViewModel : ViewModel() {
                 response: Response<MutableList<Photo>>
             ) {
                 listPhoto.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<MutableList<Photo>>, t: Throwable) {
+                Log.wtf("error", "${t.message}")
+            }
+
+        })
+    }
+
+    fun loadMoreImage(){
+        page++
+        dataService.getPhotos(Config.unsplash_access_key, page, null).enqueue(object : Callback<MutableList<Photo>> {
+            override fun onResponse(
+                call: Call<MutableList<Photo>>,
+                response: Response<MutableList<Photo>>
+            ) {
+                loadMoreListPhoto.postValue(response.body())
             }
 
             override fun onFailure(call: Call<MutableList<Photo>>, t: Throwable) {

@@ -8,14 +8,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.FragmentPhotosBinding
+import com.example.pagerwithrecyclerview.response.Photo
 
 class PhotosFragment : Fragment() {
 
     lateinit var binding: FragmentPhotosBinding
     private val viewModel by viewModels<PhotosViewModel>()
     lateinit var photoAdapter: PhotosAdapter
+    private var listPhoto = mutableListOf<Photo>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +33,20 @@ class PhotosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getListPhoto()
         initAdapter()
+        initRecyclerViewItemListener()
 
         viewModel.listPhoto.observe(viewLifecycleOwner, {
-            photoAdapter.submitList(it)
+            val dummyList = mutableListOf<Photo>()
+            listPhoto.addAll(it)
+            dummyList.addAll(it)
+            photoAdapter.submitList(dummyList)
+        })
+
+        viewModel.loadMoreListPhoto.observe(viewLifecycleOwner, {
+            val dummyList = mutableListOf<Photo>()
+            listPhoto.addAll(it)
+            dummyList.addAll(listPhoto)
+            photoAdapter.submitList(dummyList)
         })
     }
 
@@ -42,5 +56,17 @@ class PhotosFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = photoAdapter
         }
+    }
+
+    private fun initRecyclerViewItemListener() {
+        val layoutManager = binding.rvPhotos.layoutManager as LinearLayoutManager
+        binding.rvPhotos.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                if (lastPosition == listPhoto.size - 2) viewModel.loadMoreImage()
+            }
+        })
     }
 }
