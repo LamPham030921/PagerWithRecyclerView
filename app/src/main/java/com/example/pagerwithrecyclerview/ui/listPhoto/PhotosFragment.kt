@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.FragmentPhotosBinding
@@ -53,9 +54,10 @@ class PhotosFragment : Fragment() {
     private fun initAdapter() {
         photoAdapter = PhotosAdapter()
         binding.rvPhotos.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = PhotosAdapter.ProminentLayoutManager(context)
             adapter = photoAdapter
         }
+        PagerSnapHelper().attachToRecyclerView(binding.rvPhotos)
     }
 
     private fun initRecyclerViewItemListener() {
