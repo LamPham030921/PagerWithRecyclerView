@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.ItemPhotoBinding
-import com.example.pagerwithrecyclerview.response.Photo
+import com.example.pagerwithrecyclerview.response.PhotoResponse
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtils()) {
+class PhotosAdapter(private val listener: PhotoClickListener) :
+    ListAdapter<PhotoResponse, PhotosAdapter.ViewHolder>(PhotoDiffUtils()) {
+
+    interface PhotoClickListener {
+        fun onPhotoClick(photo: PhotoResponse)
+    }
 
     class ViewHolder(val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -26,6 +31,9 @@ class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtil
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = getItem(position)
+        holder.binding.root.setOnClickListener {
+            listener.onPhotoClick(photo)
+        }
         holder.binding.ivPhoto.let {
             val recyclerHeight = it.context.resources.getDimensionPixelSize(R.dimen.recycler_height)
             val percent: Float = photo.width!!.toFloat() / photo.height!!.toFloat()
@@ -105,12 +113,12 @@ class PhotosAdapter : ListAdapter<Photo, PhotosAdapter.ViewHolder>(PhotoDiffUtil
         }
     }
 
-    class PhotoDiffUtils() : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+    class PhotoDiffUtils() : DiffUtil.ItemCallback<PhotoResponse>() {
+        override fun areItemsTheSame(oldItem: PhotoResponse, newItem: PhotoResponse): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        override fun areContentsTheSame(oldItem: PhotoResponse, newItem: PhotoResponse): Boolean {
             return oldItem.id == newItem.id
         }
 

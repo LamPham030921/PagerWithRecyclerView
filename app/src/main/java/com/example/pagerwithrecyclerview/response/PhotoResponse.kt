@@ -2,11 +2,11 @@ package com.example.pagerwithrecyclerview.response
 
 import com.google.gson.annotations.SerializedName
 
-class Photo(
+class PhotoResponse(
     @SerializedName("id")
     var id: String? = null,
     @SerializedName("urls")
-    var urls: Photo? = null,
+    var urls: PhotoResponse? = null,
     @SerializedName("raw")
     var raw: String? = null,
     @SerializedName("regular")
@@ -18,5 +18,7 @@ class Photo(
     @SerializedName("width")
     var width: Int? = null,
     @SerializedName("height")
-    var height: Int? = null
+    var height: Int? = null,
+    @SerializedName("user")
+    var user: UserResponse? = null
 )

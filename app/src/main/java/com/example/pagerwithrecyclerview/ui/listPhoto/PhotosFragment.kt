@@ -7,20 +7,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pagerwithrecyclerview.R
 import com.example.pagerwithrecyclerview.databinding.FragmentPhotosBinding
-import com.example.pagerwithrecyclerview.response.Photo
+import com.example.pagerwithrecyclerview.response.PhotoResponse
 
-class PhotosFragment : Fragment() {
+class PhotosFragment : Fragment(), PhotosAdapter.PhotoClickListener {
 
     lateinit var binding: FragmentPhotosBinding
     private val viewModel by viewModels<PhotosViewModel>()
     lateinit var photoAdapter: PhotosAdapter
-    private var listPhoto = mutableListOf<Photo>()
+    private var listPhoto = mutableListOf<PhotoResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +39,7 @@ class PhotosFragment : Fragment() {
         initRecyclerViewItemListener()
 
         viewModel.listPhoto.observe(viewLifecycleOwner, {
-            val dummyList = mutableListOf<Photo>()
+            val dummyList = mutableListOf<PhotoResponse>()
             listPhoto.addAll(it)
             dummyList.addAll(it)
             if (it.size > 0) {
@@ -50,7 +51,7 @@ class PhotosFragment : Fragment() {
         })
 
         viewModel.loadMoreListPhoto.observe(viewLifecycleOwner, {
-            val dummyList = mutableListOf<Photo>()
+            val dummyList = mutableListOf<PhotoResponse>()
             listPhoto.addAll(it)
             dummyList.addAll(listPhoto)
             photoAdapter.submitList(dummyList)
@@ -58,7 +59,8 @@ class PhotosFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        photoAdapter = PhotosAdapter()
+        photoAdapter = PhotosAdapter(this)
+
         binding.rvPhotos.apply {
             setItemViewCacheSize(4)
             layoutManager = PhotosAdapter.ProminentLayoutManager(context)
@@ -86,5 +88,12 @@ class PhotosFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onPhotoClick(photo: PhotoResponse) {
+        photo.user?.username?.let {
+            findNavController().navigate(PhotosFragmentDirections.actionPhotosFragmentToPhotoDetailFragment(it))
+        }
+
     }
 }

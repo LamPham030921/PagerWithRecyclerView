@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_photo"
+    app:startDestination="@id/photosFragment">
+
+    <fragment
+        android:id="@+id/photosFragment"
+        android:name="com.example.pagerwithrecyclerview.ui.listPhoto.PhotosFragment"
+        android:label="PhotosFragment"
+        tools:layout="@layout/fragment_photos" >
+        <action
+            android:id="@+id/action_photosFragment_to_photoDetailFragment"
+            app:destination="@id/photoDetailFragment" >
+            <argument
+                android:name="userId"
+                app:nullable="false"
+                app:argType="string"
+                />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoDetailFragment"
+        android:name="com.example.pagerwithrecyclerview.ui.photoDetail.PhotoDetailFragment"
+        android:label="fragment_photo_detail"
+        tools:layout="@layout/fragment_photo_detail" >
+        <argument
+            android:name="userId"
+            app:nullable="false"
+            app:argType="string"
+            />
+    </fragment>
+
+</navigation>
