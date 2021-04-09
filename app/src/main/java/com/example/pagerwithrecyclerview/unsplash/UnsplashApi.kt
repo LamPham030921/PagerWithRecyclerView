@@ -18,18 +18,26 @@ interface UnsplashApi {
     }
 
     @GET("photos/{id}")
-    fun getPhoto(@Path(ID) id: Int) : PhotoResponse
+    fun getPhoto(@Path(ID) id: Int): PhotoResponse
 
     @GET("photos")
     fun getPhotos(
-        @Header("Authorization") author : String,
+        @Header("Authorization") author: String,
         @Query(PAGE) page: Int?,
         @Query(PER_PAGE) perPage: Int?
-    ) : Call<MutableList<PhotoResponse>>
+    ): Call<MutableList<PhotoResponse>>
 
     @GET("users/{username}")
     fun getUserInfo(
-        @Header("Authorization") author : String,
+        @Header("Authorization") author: String,
         @Path(USERNAME) username: String
-    ) : Call<UserResponse>
+    ): Call<UserResponse>
+
+    @GET("users/{username}/photos")
+    fun getUserPhotos(
+        @Header("Authorization") author: String,
+        @Path(USERNAME) username: String,
+        @Query(PAGE) page: Int?,
+        @Query(PER_PAGE) perPage: Int?
+    ): Call<MutableList<PhotoResponse>>
 }
