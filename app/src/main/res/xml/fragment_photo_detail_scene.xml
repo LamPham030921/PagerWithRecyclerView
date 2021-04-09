@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/tools">
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/viewTriangleNeighbor"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:translationZ="0dp"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/viewTriangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewTriangle" />
+
+        <Constraint
+            android:id="@+id/cvLike"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@id/viewTriangleNeighbor"
+            app:layout_constraintCircleRadius="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/viewTriangleNeighbor" />
+
+        <Constraint
+            android:id="@+id/viewTriangle"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_triangle"
+            android:rotation="180"
+            app:layout_constraintBottom_toBottomOf="@id/ivWall"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/rrvAvatar"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/viewTriangleNeighbor"
+            app:layout_constraintEnd_toStartOf="@id/viewTriangleNeighbor"
+            app:layout_constraintStart_toStartOf="@id/viewTriangleNeighbor"
+            app:layout_constraintTop_toTopOf="@id/viewTriangleNeighbor"
+            app:shape_roundRect_bottomLeftRadius="6dp"
+            app:shape_roundRect_bottomRightRadius="6dp"
+            app:shape_roundRect_topLeftRadius="6dp"
+            app:shape_roundRect_topRightRadius="6dp" />
+
+        <Constraint
+            android:id="@+id/ivBack"
+            app:tint="@color/white" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/viewTriangleNeighbor"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            android:translationZ="2dp"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewTriangle"
+            app:layout_constraintTop_toTopOf="@id/viewTriangle" />
+
+        <Constraint
+            android:id="@+id/cvLike"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="24dp"
+            android:scaleX="0"
+            android:scaleY="0"
+            app:layout_constraintBottom_toTopOf="@id/viewTriangleNeighbor"
+            app:layout_constraintCircleRadius="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/viewTriangleNeighbor" />
+
+        <Constraint
+            android:id="@+id/viewTriangle"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_triangle"
+            android:rotation="180"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/rrvAvatar"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:background="@color/black"
+            android:translationZ="-1dp"
+            app:layout_constraintEnd_toEndOf="@id/viewTriangleNeighbor"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="@id/viewTriangleNeighbor"
+            app:layout_constraintTop_toBottomOf="@id/viewTriangleNeighbor"
+            app:shape_roundRect_bottomLeftRadius="6dp"
+            app:shape_roundRect_bottomRightRadius="6dp"
+            app:shape_roundRect_topLeftRadius="6dp"
+            app:shape_roundRect_topRightRadius="6dp" />
+
+        <Constraint android:id="@+id/ivBack">
+            <CustomAttribute
+                app:attributeName="IvBackColor"
+                motion:customColorValue="@color/black" />
+        </Constraint>
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@+id/start"
+        app:duration="1000">
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@id/rvUserPhotos"
+            app:touchAnchorSide="top" />
+        <KeyFrameSet>
+            <KeyAttribute
+                android:rotation="45"
+                android:translationX="-80dp"
+                android:translationY="-98dp"
+                android:translationZ="0dp"
+                app:framePosition="20"
+                app:motionTarget="@+id/rrvAvatar" />
+            <KeyAttribute
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="50"
+                app:motionTarget="@+id/cvLike" />
+
+            <KeyAttribute
+                android:scaleX="0.1"
+                android:scaleY="0.1"
+                app:framePosition="60"
+                app:motionTarget="@+id/cvLike" />
+
+            <KeyAttribute
+                android:translationZ="0dp"
+                app:framePosition="99"
+                app:motionTarget="@+id/viewTriangleNeighbor" />
+        </KeyFrameSet>
+    </Transition>
+</MotionScene>

@@ -7,10 +7,9 @@
 
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_photo_detail_scene"
         tools:context=".ui.photoDetail.PhotoDetailFragment">
 
         <ImageView
@@ -18,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="fitXY"
-            android:translationZ="-1dp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -27,8 +25,8 @@
             android:layout_height="80dp"
             android:background="@drawable/bg_triangle"
             android:rotation="180"
-            app:layout_constraintBottom_toBottomOf="@id/ivWall"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/viewTriangleNeighbor"
@@ -36,9 +34,9 @@
             android:layout_height="80dp"
             android:background="@color/white"
             app:elevation="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/viewTriangle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/viewTriangle">
+            app:layout_constraintStart_toEndOf="@id/viewTriangle"
+            app:layout_constraintTop_toTopOf="@id/viewTriangle">
 
             <TextView
                 android:id="@+id/tvName"
@@ -53,24 +51,43 @@
                 android:textStyle="bold" />
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/tvLikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewTriangleNeighbor" />
+
+        <TextView
+            android:id="@+id/tvPhotosCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintTop_toBottomOf="@id/viewTriangleNeighbor" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvUserPhotos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingTop="60dp"
+            android:paddingTop="20dp"
             android:paddingBottom="60dp"
-            app:layout_constraintTop_toBottomOf="@id/viewTriangleNeighbor" />
+            app:layout_constraintTop_toBottomOf="@id/tvPhotosCount" />
 
         <com.github.florent37.shapeofview.shapes.RoundRectView
             android:id="@+id/rrvAvatar"
             android:layout_width="120dp"
             android:layout_height="180dp"
+            android:layout_margin="20dp"
+            android:rotation="45"
             android:background="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/viewTriangleNeighbor"
-            app:layout_constraintEnd_toStartOf="@id/viewTriangleNeighbor"
             app:layout_constraintStart_toStartOf="@id/viewTriangleNeighbor"
             app:layout_constraintTop_toTopOf="@id/viewTriangleNeighbor"
             app:shape_roundRect_bottomLeftRadius="6dp"
@@ -91,6 +108,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginEnd="24dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/viewTriangleNeighbor"
             app:layout_constraintCircleRadius="40dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -118,11 +136,11 @@
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="16dp"
             android:elevation="10dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
@@ -60,8 +59,6 @@ class PhotoDetailFragment : Fragment(), View.OnClickListener {
             user?.photos?.get(0)?.urls?.regular?.let { loadImage(it, binding.ivWall) }
             user?.profile_image?.large?.let { loadImage(it, binding.ivAvatar) }
             user?.username?.let { binding.tvName.text = it }
-            user?.totalLike?.let { binding.tvLikeCount.text = "Total like : $it" }
-            user?.totalPhoto?.let { binding.tvPhotosCount.text = "Total photos : $it" }
         })
 
         viewModel.listPhoto.observe(viewLifecycleOwner, { photos ->
